@@ -344,8 +344,7 @@ def indexesFromSentence(voc, sentence):
 #             print("Error: Encountered unknown word.")
 # ###########################################################               
 
-import torch
-from fastapi import HTTPException
+
 
 def evaluate(encoder, decoder, searcher, voc, sentence, max_length=MAX_LENGTH):
     try:
@@ -396,7 +395,7 @@ encoder_model_path = 'encoder_model.pickle'
 decoder_model_path = 'decoder_model.pickle'
 voc_path = 'voc.pkl'
 
-import pickle
+
 
 with open(voc_path, "rb") as f:
     voc = pickle.load(f)
@@ -418,6 +417,11 @@ app = FastAPI()
 class ChatRequest(BaseModel):
     sentence: str
 
+
+@app.get("/")
+async def root():
+    return {"message": "Hello World"}
+
 @app.post("/chat/")
 async def chat(request: ChatRequest):
     sentence = request.sentence
@@ -429,4 +433,4 @@ async def chat(request: ChatRequest):
 
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="127.0.0.1", port=8000)
+    uvicorn.run(app, host="0.0.0.0", port=8000)
